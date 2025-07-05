@@ -43,14 +43,14 @@ const Navbar = () => {
       <motion.nav
         animate={{
           boxShadow: scrolled ? "var(--shadow-primary)" : "none",
-          width: scrolled ? "50%" : "100%",
+          maxWidth: scrolled ? "42rem" : "56rem",
           y: scrolled ? 10 : 0,
         }}
         transition={{
           duration: 0.3,
           ease: "easeInOut",
         }}
-        className="fixed inset-x-0 z-50 mx-auto flex max-w-4xl items-center justify-between rounded-full px-4 py-2 dark:bg-neutral-700"
+        className="fixed inset-x-0 z-50 mx-auto flex max-w-4xl items-center justify-between rounded-full bg-white p-2 dark:bg-neutral-700"
       >
         <Image
           className="h-10 w-10 rounded-full"
