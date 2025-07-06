@@ -1,26 +1,48 @@
 import Container from "@/components/Container";
-import Projects from "@/components/Projects";
-import { Metadata } from "next";
-import React from "react";
+import { Frontmatter, getBlog, getBlogFrontmatterBySlug } from "@/utils/mdx";
+import { redirect } from "next/navigation";
 
-const metaData: Metadata = {
-  title: "Shazab's Blogs",
-  description:
-    "A collection of technical articles and insights by Shazab Saifi, covering topics in JavaScript, TypeScript, React, Next.js, Node.js, and modern web development frameworks.",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const frontmatter = (await getBlogFrontmatterBySlug(
+    params.slug,
+  )) as Frontmatter;
 
-const page = () => {
+  if (!frontmatter) {
+    return {
+      titla: "No blog found!",
+    };
+  }
+
+  return {
+    title: frontmatter.title + " by Shazab Saifi",
+    description: frontmatter.description,
+  };
+}
+
+const page = async ({
+  params,
+}: {
+  params: {
+    slug: string;
+  };
+}) => {
+  const param = await params;
+  const blog = await getBlog(param.slug);
+
+  if (!blog) {
+    redirect("/blog");
+  }
+
+  const { content } = blog;
+
   return (
-    <div className="flex min-h-screen items-center justify-start">
-      <Container classname="min-h-[200vh] px-10 md:pt-20 mb:pb-10">
-        <h1 className="text-primary text-2xl font-bold tracking-tight md:text-4xl">
-          All Blogs
-        </h1>
-        <p className="text-secondary text-sm md:text-base">
-          I'm a software engineer with a passion of building scalable and
-          efficient systems. I'm currently working as a freelancer.
-        </p>
-        <Projects />
+    <div className="flex min-h-screen w-full items-center justify-start">
+      <Container classname="min-h-[200vh] w-full px-10 md:pt-20 mb:pb-10">
+        <div className="prose mx-auto">{content}</div>
       </Container>
     </div>
   );

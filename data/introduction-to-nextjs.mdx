@@ -1,0 +1,236 @@
+---
+title: "Introduction to next.js"
+description: "Learn the fundamentals of Next.js, the leading React framework for building fast, scalable, and production-ready web applications. This guide covers key features, setup, and best practices to help you get started with Next.js."
+image: "/nextImage.png"
+date: 2025-02-01
+---
+
+# Introduction to Next.js: The React Framework for Production
+
+Next.js is a powerful React framework that simplifies the development of full-stack web applications. It provides an excellent developer experience with features like server-side rendering, static site generation, and API routes out of the box.
+
+## What is Next.js?
+
+Next.js is a **full-stack React framework** that enables you to build production-ready web applications. It extends React's capabilities by providing:
+
+- **Server-Side Rendering (SSR)**: Pre-render pages on the server for better SEO and performance
+- **Static Site Generation (SSG)**: Generate static pages at build time
+- **API Routes**: Build backend APIs within your Next.js application
+- **File-based Routing**: Automatic routing based on your file structure
+- **Built-in CSS Support**: Support for CSS Modules, Sass, and styled-components
+- **Image Optimization**: Automatic image optimization with the `next/image` component
+
+## Why Choose Next.js?
+
+### 1. **Zero Configuration**
+
+Next.js comes with sensible defaults, so you can start building immediately without complex setup:
+
+```bash
+npx create-next-app@latest my-app
+cd my-app
+npm run dev
+```
+
+### 2. **Performance Optimized**
+
+- Automatic code splitting
+- Pre-fetching for faster navigation
+- Optimized images and fonts
+- Built-in performance monitoring
+
+### 3. **SEO Friendly**
+
+Server-side rendering ensures your content is available to search engines and improves Core Web Vitals.
+
+## Key Features Explained
+
+### File-Based Routing
+
+Next.js uses a file-system based router. Create files in your `app` directory to automatically create routes:
+
+```
+app/
+├── page.tsx          # Home page (/)
+├── about/
+│   └── page.tsx      # About page (/about)
+├── blog/
+│   ├── page.tsx      # Blog listing (/blog)
+│   └── [slug]/
+│       └── page.tsx  # Dynamic blog posts (/blog/post-1)
+```
+
+### Server Components (App Router)
+
+Next.js 13+ introduces React Server Components, allowing you to write components that run on the server:
+
+```tsx
+// app/page.tsx
+async function getData() {
+  const res = await fetch("https://api.example.com/data");
+  return res.json();
+}
+
+export default async function HomePage() {
+  const data = await getData();
+
+  return (
+    <main>
+      <h1>Welcome to Next.js</h1>
+      <p>Data: {data.message}</p>
+    </main>
+  );
+}
+```
+
+### API Routes
+
+Create backend APIs directly in your Next.js app:
+
+```tsx
+// app/api/users/route.ts
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const users = [
+    { id: 1, name: "John Doe" },
+    { id: 2, name: "Jane Smith" },
+  ];
+
+  return NextResponse.json(users);
+}
+
+export async function POST(request: Request) {
+  const body = await request.json();
+
+  // Handle user creation
+  return NextResponse.json({ message: "User created" }, { status: 201 });
+}
+```
+
+## Data Fetching Strategies
+
+### 1. **Server-Side Rendering (SSR)**
+
+Fetch data on every request:
+
+```tsx
+async function getServerSideProps() {
+  const res = await fetch("https://api.example.com/data");
+  const data = await res.json();
+
+  return {
+    props: { data },
+  };
+}
+```
+
+### 2. **Static Site Generation (SSG)**
+
+Generate pages at build time:
+
+```tsx
+export async function generateStaticParams() {
+  const posts = await getPosts();
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+```
+
+### 3. **Incremental Static Regeneration (ISR)**
+
+Update static pages after build time:
+
+```tsx
+export const revalidate = 3600; // Revalidate every hour
+```
+
+## Styling in Next.js
+
+Next.js supports multiple styling approaches:
+
+### CSS Modules
+
+```css
+/* styles/Button.module.css */
+.button {
+  background: blue;
+  color: white;
+  padding: 10px 20px;
+}
+```
+
+```tsx
+import styles from "./Button.module.css";
+
+export default function Button() {
+  return <button className={styles.button}>Click me</button>;
+}
+```
+
+### Tailwind CSS
+
+```tsx
+export default function Card() {
+  return (
+    <div className="max-w-sm rounded-lg bg-white p-6 shadow-lg">
+      <h3 className="text-xl font-bold">Card Title</h3>
+      <p className="mt-2 text-gray-600">Card content</p>
+    </div>
+  );
+}
+```
+
+## Deployment
+
+Next.js applications can be deployed to various platforms:
+
+### Vercel (Recommended)
+
+```bash
+npm install -g vercel
+vercel
+```
+
+### Other Platforms
+
+- Netlify
+- AWS Amplify
+- Docker containers
+- Traditional hosting
+
+## Getting Started Checklist
+
+1. **Install Node.js** (version 18.17 or later)
+2. **Create a new project**:
+   ```bash
+   npx create-next-app@latest my-app --typescript --tailwind --eslint
+   ```
+3. **Navigate to your project**:
+   ```bash
+   cd my-app
+   ```
+4. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+5. **Open your browser** and visit `http://localhost:3000`
+
+## Best Practices
+
+- **Use TypeScript** for better type safety
+- **Implement proper error boundaries** for better UX
+- **Optimize images** using the `next/image` component
+- **Use environment variables** for configuration
+- **Implement proper SEO** with metadata
+- **Test your application** thoroughly
+
+## Conclusion
+
+Next.js is an excellent choice for building modern web applications. Its combination of developer experience, performance optimizations, and production-ready features makes it a powerful framework for both small projects and large-scale applications.
+
+Whether you're building a simple blog, an e-commerce site, or a complex web application, Next.js provides the tools and conventions you need to succeed.
+
+Start your Next.js journey today and experience the power of full-stack React development!

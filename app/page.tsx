@@ -1,3 +1,4 @@
+import Blogs from "@/components/Blogs";
 import Container from "@/components/Container";
 import Navbar from "@/components/navbar";
 import Projects from "@/components/Projects";
@@ -15,6 +16,7 @@ export default function Home() {
           efficient systems. I'm currently working as a freelancer.
         </p>
         <Projects />
+        <Blogs />
       </Container>
     </div>
   );
